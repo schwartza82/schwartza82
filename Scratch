@@ -1,0 +1,18 @@
+## BINARY  
+Base-2 = binary
+Bit = a zero or one 
+
+Light bulb analogy. Light bulb one = 1; light bulb stays off = 0
+
+**In binary permutations matter**
+
+Getting another lightbulb is like getting more hardware
+
+Binary system table
+2^2 | 2^1 | 2^0
+1   |  0   | 1
+
+This is 5
+
+Byte = 8 bits; 00000000
+##
