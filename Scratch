@@ -1,4 +1,6 @@
-## BINARY  
+## 
+BINARY 
+
 Base-2 = binary
 Bit = a zero or one 
 
@@ -16,3 +18,35 @@ This is 5
 
 Byte = 8 bits; 00000000
 ##
+
+## 
+ASCII: representing letters
+
+ASCII = American Standard Code for Information Interchange
+
+Assigning numbers to letters; uses 8 bites to represent letters 
+
+Can map every letter in it's upper and lowercase number 
+***This will be used more in week 1
+##
+##
+
+Unicode: a superset of ASCII
+Uses 16, 32, and sometimes 64 bites per character (1 bytes, 2 bytes, 3 bytes, or 4 bytes)
+
+Unicode code point = a system that uses base-16 or hexadecimal system to represent numbers succidently 
+
+Example of customization: Fizpatick scale 
+
+Categorizes human skin tones into 6 categories from lighter to darker
+
+Skin tone = a modification of a default; attach a few more switches (the 2nd number) to the default  
+
+Example of cumbinations + customization in emojis: Relationship emoji 
+
+Zero-width joiners or ZWNJ characters = special numbers that glue the emoji at the left ot the emoji on the right
+
+
+##
+
+
