@@ -1,0 +1,13 @@
+##
+Review:
+Functions: arguments, side effects, return values
+Conditionals
+Boolean expression
+Loops 
+Variables
+##
+Source code = code that you the human programmer write
+Machine code = code that the computer knows
+Compilers convert source code ---> machine code
+- evaulate code by correctness, design, and style
+##
