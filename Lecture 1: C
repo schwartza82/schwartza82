@@ -117,3 +117,144 @@ int main(void)
 
 Comment in c with "//"
 - can be an approximation of pseudocode and can help you solve problems esp when you don't know where to begin
+
+Creating Functions with Inputs
+
+#include <stdio.h>
+#include <cs50.h>
+
+int main(void)
+
+{
+    //Get size of grid
+    int n = get_size();
+
+    //Print grid of bricks
+    print_grid(n);
+
+}
+
+Making get_size() function:
+
+int get_size(void)
+{
+    int n;
+    do
+    {
+        n = get_int("Size: ");
+    }
+    while (n < 1);
+    return n; 
+}
+- get_size(void) gets a value n from the user that's positive and is handed back as a return value
+- in line 130 we're calling the function get_size() and using the assignment operator to coy whatever its return value is into the variable n 
+
+EX 7: FULL EXAMPLE OF INPUT FUNCTION CREATIONS 
+
+#include <stdio.h>
+#include <cs50.h>
+
+int get_size(void);
+void print_grid(int size);
+//tease compiler so it knows to use the functions you just created
+
+int main(void)
+{
+    //Get size of grid
+    int n = get_size();
+
+    //Print grid of bricks
+    print_grid(n);
+
+}
+
+//creating get_size function
+
+int get_size(void)
+{
+    int n;
+    do
+    {
+        n = get_int("Size: ");
+    }
+    while (n < 1);
+    return n;
+}
+
+//creating print grid function
+
+void print_grid(int size)
+//void means there's no output/return value it's just "void"
+//int is the argument (input) in c, we have to use the syntax where we state the type of input our function takes and the name of the variable
+{
+    for (int i=0; i< size; i++)
+    {
+        for (int j = 0; j< size; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
+
+##What computers can do well and what they can't do well
+C supports operators which lets us to math!!!
+
+// Making calculator in C
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    int x = get_int("x: ");
+    int y = get_int("y: ");
+
+    printf("%i\n", x + y);
+}
+- Oops when we enter large enough numbers our calculator doesn't work!!
+- This is because we have limited memory 
+- We usually only have 32 bits (zeros or one's) that we can use to represent an integer therefore we encounter an integer overflow 
+
+
+Introducing longs or "long integers" which use 64 bits instead of 32 bits 
+
+printf supports format codes:
+- %c
+- %f (floating point values with decimals)
+- %i
+- %li (long integers)
+- %s
+
+Truncation can make getting accurate decimals or fractions difficult so we need to use "type casting"
+- Type casting converts one datatype (integer, string, etc) to another datatype by explicitly telling the compiler 
+
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    long x = get_long("x: ");
+    long y = get_long("y: ");
+
+    float z = (float) x / (float) y;
+    printf("%f\n", z);
+}
+//On line 239 the (float) before the variables x and y is a type cast that lets us convert from integers to floats so we can actually divide correctly
+
+Floating-point imprecision
+- another challenge that says there's a bound rate to how precise our numbers can be
+
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    long x = get_long("x: ");
+    long y = get_long("y: ");
+
+    float z = (float) x / (float) y;
+    printf("%.20f\n", z);
+}
+- example where we ask for 20 decimal places
+
+
