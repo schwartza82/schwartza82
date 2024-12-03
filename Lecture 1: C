@@ -55,3 +55,65 @@ int main(void)
         printf("\n");
     }
 }
+
+EX 4: Ensuring brick is a square
+const means constant, defensive coding in c, prevents you from changing a variable 
+
+#include <stdio.h>
+
+int main(void)
+{
+    const int n = 3;
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
+
+EX 5: Customizing brick square grid 
+#include <stdio.h>
+#include <cs50.h>
+
+int main(void)
+{
+    int n = get_int("Size: ");
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
+
+Ex 6: Getting input from the user and making sure that said input meets certain requirements with a Do-While loop
+#include <stdio.h>
+#include <cs50.h>
+
+int main(void)
+
+{
+    int n;
+    do
+    {
+        n = get_int("Size: ");
+    }
+    while (n < 1);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
+
+Comment in c with "//"
+- can be an approximation of pseudocode and can help you solve problems esp when you don't know where to begin
