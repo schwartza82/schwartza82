@@ -11,3 +11,47 @@ Machine code = code that the computer knows
 Compilers convert source code ---> machine code
 - evaulate code by correctness, design, and style
 ##
+Uh oh my work didn't save
+
+## mario practice
+
+EX: four question mark 
+#include <stdio.h>
+
+int main(void)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        printf("?");
+    }
+    printf("\n");
+}
+
+EX 2: brick example
+#include <stdio.h>
+
+int main(void)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        printf("#\n");
+    }
+}
+
+EX 3: 3x3 grid of bricks
+- nesting loopss with the variable "j" being nested in the for loop that uses "i"
+- nested loop is the inner loop that forms the rows 
+
+Code 
+#include <stdio.h>
+int main(void)
+{
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
