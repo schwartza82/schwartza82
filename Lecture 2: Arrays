@@ -1,0 +1,45 @@
+//Figuring out grade level for a text
+
+//Cipher text = the result of encrypting a piece of information (cryptography)
+
+//Consider hello world in C
+
+#include <studio.h>
+
+int main(void)
+{
+  printf("hello, world\n");
+}
+
+//Make in "make hello" is NOT a compiler but a program that automates the process of using an actual compiler
+- Actual compiler is called "clang" for "c language"
+
+ls a.out
+- a.out = assembler output and is the default name of a program when you print out from just running clang by itself
+- can rename a.out by using the Linux command mv or can use a COMMAND LINE ARGUMENT
+
+Command Line Argument = additional word or key phrase that you type after a command at your prompt in your terminal window that just modifies the behavior of that command
+
+Use:
+clang -o hello hello.c
+// -o means change clang's output to be a file called hello instead of a.out
+
+Clang -o hello hello.c in code with user input aspect:
+
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+
+{
+
+    string name = get_string("What's your name?\n");
+    printf("hello, %s\n", name);
+}
+
+Gets error: /usr/bin/ld: /tmp/hello-9d456f.o: in function `main':
+hello.c:(.text+0x16): undefined reference to `get_string'
+clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+
