@@ -317,8 +317,86 @@ float average(int length, int array[]) //here we implement the average function 
 }
 
 
+//String 
 
- 
+declaring a simple string:
+string s = "HI!";
+
+- in the computer's memory this is stored in one variable s (3 squares back-to-back)
+- That means a string is AN ARRAY OF CHARACTERS
+
+A string called s in your computer is really:
+s[0] = char 'H'
+s[1] = char 'I'
+s[2] = char'!'
+s[3] = \0
+
+How do you know when strings end?
+- Sentinal value = extra bite at the end of every such string array that C adds to make it clear that the string ends 'here'
+- 'Hi!' example is 3 + 1 bytes
+- \0 = null
+
+#include <stdio.h>
+
+int main(void)
+{
+    char c1 = 'H';
+    char c2 = 'I';
+    char c3 = '!';
+
+    printf("%i% i% i\n", c1, c2, c3);
+}
+- Output: 72, 73, 33 //ASCII (I think????) that translates to "HI!"
+
+Now let's use string:
+
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string s = "HI!";
+
+    printf("%s\n", s);
+}
+
+EXPAND THIS TO SEE UNDER THE HOOD
+
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string s = "HI!";
+
+    printf("%i %i %i %i \n", s[0], s[1], s[2], s[3]);
+}
+- Notice you don't need brackets for string s, you can do this because you can treat s as just a variable name without square brackets
+- Need square brackets for arrays of ints or when you manually create arrays of chars/doubles/floats/etc but strings are special in C b/c they rep text
+
+Ouput:
+72 73 33 0 
+
+//Manipulating strings (with indexing I think)
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string words[2];
+
+    words[0] = "HI!";
+    words[1] = "BYE!";
+
+    printf("%c%c%c\n", words[0][0], words[0][1], words[0][2]);
+    printf("%c%c%c%c\n", words[1][0], words[1][1], words[1][2], words[1][3]);
+}
+
+
+
+
+
+
 
 
 
