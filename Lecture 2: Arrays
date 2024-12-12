@@ -41,5 +41,285 @@ Gets error: /usr/bin/ld: /tmp/hello-9d456f.o: in function `main':
 hello.c:(.text+0x16): undefined reference to `get_string'
 clang: error: linker command failed with exit code 1 (use -v to see invocation)
 
+Use: 
+clang -o hello hello.c -lcs50
+./hello
+
+-This lets you use libraries like cs50
+-Stdio comes with C so you don't need to use it in clang
+
+//Compiling steps
+1. Preprocessing
+2. Compiling
+3. Assembling
+4. Linking
+
+Preprocessing
+- # (hash symbol) is a pre-processor directive and makes it so anything with a hash symbol should be analyzed initially before anything else happens
+Example: #include <cs50.h>
+- Is in a folder called /usr/include 
+- Somewhere in cs50 is the declaration of string get_string(string prompt); 
+
+Compiling
+- Once a program has been preprocessed it is converted to assembly code
+
+Assembling
+- Assembly code gets converted to machine code (1's and 0's)
+
+Linking
+- Combine "my code" with "cs50's code" (cs50.c) and "stdio's code" (stdio.c)
+
+Decompiling 
+- Converting machine code back to c
+- Decompiling would make your "human code" in java, python etc a MESS to look at because variable, function names etc are not retained in the 0's and 1's
+- therefore it's pretty hard to decompile stuff successfully
+
+//Debugging with buggy0.c example
+- Remember, if make buggy0 goes through then you have no syntax errors
+
+1. Debugging technique: printf(); as a Diagnostic Tool - Good for printing out the contents of variables to figure out your mistake
+
+In example:
+#include <stdio.h>
+
+int main(void)
+{
+    for (int i = 0; i <= 3; i++)
+    {
+        printf("i is %i\n");
+        printf("#\n");
+
+    }
+
+In turn you get the output: 
+$ make buggy0
+$ ./buggy0
+i is 0
+#
+i is 1
+#
+i is 2
+#
+i is 3
+#
+$ 
+
+2. Debugging technique: Debugger 
+- Debugger is built into VSS code and supports C, C++, Java, Python etc
+- That said, to use the debugger in VSS you have to create a configuration file and do some other extra steps, so CS50 has automated the process of starting the debugger
+
+Breakpoints - red dots that you put next to a piece of your code that acts as a stop sign equivalent that allows you to step through your code
+- Instead of running the program itself, run a command called debug50 ./buggy0
+- Starts program inside of the debugger
+
+Buggy0.c Example:
+
+Debugger gives information on variables.
+- Local variable in exmple is i:0 (0 is value)
+
+Step over and get a hash as the output
+
+//buggy1.c example
+
+#include <stdio.h>
+#include <cs50.h>
+
+int get_negative_int(void);
+
+int main(void)
+{
+    int i = get_negative_int();
+    printf("%i\n", i);
+}
+
+int get_negative_int(void)
+{
+    int n;
+    do
+    {
+        n = get_int("Negative Integer: ");
+    }
+    while (n < 0);
+    return n;
+}
+
+Here, 
+- get_negative_int(void) is a function that takes no arguments and returns an integer
+- unfortunately, this function is also broken!
+
+Extra notes
+- int n is declared because of the notion of "scope" in C whereby a variable exists only in the most recent curly braces that you've opened (ie declaring an int in between curley brackets spanning line 13-21 means you can use that int throughout those lines including any loops)
+
+That means
+int get_negative_int(void)
+{
+    int n;
+    do
+    {
+        n = get_int("Negative Integer: ");
+    }
+    while (n < 0);
+    return n;
+}
+- int n exists in in lines 156-163
+
+That means
+int get_negative_int(void)
+{
+    do
+    {
+        int n = get_int("Negative Integer: ");
+    }
+    while (n < 0);
+    return n;
+}
+- int n only exists in line 170-172 so it won't be used in while (n < 0);
+
+Debugging process: starting in int main(void) and stepping over
+- Upon putting a breakpoint at the beginning of main(void) and skipping over, you'll realize you're continously being prompted for a negative number and therefore stuck in the while loop
+- Therefore, the bug must be in the while loop 
+
+Debugging process: starting in int main(void) and stepping into the code
+- goes into the get_negative_integer function
+
+Local variable 
+n:0
+
+-We don't need to step into n = get_int("Negative Integer: "); because it will go into the get_int function which we're pretty sure is correct
+- Instead step over
+- Upon inputting a negative number, you'll get sent back into the while loop when you step over again
+- If you put something like 50 in since 50 < 0, then return n returns 50
+
+3. Debugging technique: Rubber duck
+
+//Data types
+
+1. bool - 1 byte
+2. int - 4 bytes
+3. long - 8 bytes
+4. float - 4 bytes
+5. double - 8 bytes
+6. char - 1 byte
+7. string - ? bytes (can depend - something like hi! is 3 bytes)
+
+Memory modual for a modern computer - representation of finite memory a computer has 
+
+3 ints
+int score1 = 72;
+int score2 = 73;
+int score3 = 33; 
+
+
+#include <stdio.h>
+int main(void)
+{
+    int score1 = 72;
+    int score2 = 73;
+    int score3 = 33;
+
+    printf("Average is: %f\n", (score1 + score2 +score3) / (float) 3 );
+}
+- one more precise data type on the right makes C treat everything else as a floating point value 
+- (float) 3 typecasts the 3 from an int to a float (still impression tho)
+- We can make this solution extrapolate to more scores by using an array!!
+
+//Arrays
+Arrays = a way of storing your data back-to-back in the computer's memory so you can access each individual memory easily
+
+You can do something like:
+
+int scores[3];
+- this says to the computer "give me variable 'scores' of size 3, each of which will be an integer" aka "please give me 12 bytes in total 3 * 4 int"
+
+int scores[3];
+
+int scores[0] = 72;
+int scores[1] = 73;
+int scores[2] = 33;
+- 3 locations on the 'scores' variable. Arrays let you index into these 3 locations 
+- things in C are zero-indexed 
+
+#include <stdio.h>
+#include <cs50.h>
+int main(void)
+{
+    int scores[3];
+    for (int i = 0; i<3; i++)
+    {
+        scores[i] = get_int("Score: ");
+    }
+
+    printf("Average is: %f\n", (scores[0] + scores[1] + scores[2]) / (float) 3);
+}
+
+-memory is stored contiguously: top to bottom, left to right
+- aka integers are back-to-back
+
+//arrays can be passed around as arguments
+Example: 
+
+#include <stdio.h>
+#include <cs50.h>
+const int N = 3; //global variable N that can be accessed everywhere
+float average(int array[]);
+
+int main(void)
+{
+    int scores[N];
+    for (int i = 0; i< N; i++)
+    {
+        scores[i] = get_int("Score: ");
+    }
+
+    printf("Average is: %f\n", average(scores));
+}
+
+float average(int array[]) //here we implement the average function so no ';'
+{
+    int sum = 0;
+    for (int i = 0; i < N ; i++)
+    {
+        sum += array[i]; //means sum = sum + array[i]
+    }
+    return sum / (float) length;
+}
+//unfortuneatly, in C you can't ask the array how big it is :(
+- it's fine to use global variables as a configuration 
+
+//Making your array take two arguments (same example)
+
+#include <stdio.h>
+#include <cs50.h>
+
+const int N = 3; //global variable N that can be accessed everywhere
+
+float average(int length, int array[]);
+
+int main(void)
+{
+    int scores[N];
+    for (int i = 0; i< N; i++)
+    {
+        scores[i] = get_int("Score: ");
+    }
+
+    printf("Average is: %f\n", average(N, scores));
+}
+
+float average(int length, int array[]) //here we implement the average function so no ;
+{
+    int sum = 0;
+    for (int i = 0; i < length; i++)
+    {
+        sum += array[i]; //means sum = sum + array[i]
+    }
+    return sum / (float) length;
+}
+
+
+
+ 
+
+
 
 
