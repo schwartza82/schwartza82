@@ -56,7 +56,7 @@ log_2(n) --> O(log n)
 
 //Big O cheat sheet ordered from slowest to fastest
 O(n^2) --> Selection sort
-O(n log n)
+O(n log n) --> Merge search 
 O(n) --> upper bound for linear search 
 O (log n) --> upper bound for binary search 
 O(1) --> "order of 1" refers to a fixed number of steps that never changes no matter how big n is
@@ -239,4 +239,123 @@ Therefore
 O(n^2) - "Asymtomically bubble sort has an order of n^2 making it effectivly the same as selection sort"
 
 Bubble sort can be 
+
+Bubble data = advantagous if the data is already sorted or mostly sorted
+
+Comparison sorting algorithms
+
+//Recursion
+Recursion = the ability of a function to call itself
+
+If no doors left
+  Return false 
+If 50 is behind the middle door
+  Return true
+Else if 50 < middle door
+  Search left half
+Else if 50 > middle door
+- Here, search algorithm uses a search algorithm so it is recursive
+- Not problematic b/c you keep searching for a smaller version of a problem
+
+Phone book  
+
+//Super mario review (we can make iteration recursive)
+#include <cs50.h>
+#include <stdio.h>
+
+void draw(int n);
+
+int main(void)
+{
+    int height = get_int("Heights: ");
+    draw(height);
+}
+
+void draw(int n)
+{
+    for (int i = 0; i < n; i++) //outer loop iterates line by line
+    // when i = 0, print out 1 block. 0 < 1
+    // when i = 1, print out 2 blocks 0 < 2
+    {
+        for (int j = 0; j < i + 1; j++) //inner loop makes sure that when i =
+        {
+            printf("#");
+        }
+        printf("\n");
+    }
+}
+
+
+//Attempting recursion
+//INFINITE RECURSION GO BRRR (very bad)
+#include <cs50.h>
+#include <stdio.h>
+
+void draw(int n);
+
+int main(void)
+{
+    draw(1);
+}
+
+void draw(int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        printf("#");
+    }
+    printf("\n"); //sup. this draw a pyramid of height = 1
+    draw(n + 1); //use this to draw a pyramid of height + 1
+}
+
+Output:
+recursion.c:12:1: error: all paths through this function will call itself [-Werror,-Winfinite-recursion]
+- control c cancels
+
+//RECURSION VER OF MARIO
+#include <cs50.h>
+#include <stdio.h>
+
+void draw(int n);
+
+int main(void)
+{
+    int height = get_int("Height: ");
+    draw(height);
+}
+
+void draw(int n) //draw is recursive b/c it says that a pyramid of height 4 is a pyramid of height 3 with an extra layer
+{
+    //base case
+    if (n <= 0)
+    {
+        return;
+    }
+    draw(n - 1);
+
+    for (int i = 0; i < n; i++)
+    {
+        printf("#");
+    }
+    printf("\n");
+}
+
+//Merg sorting
+
+Pseudo code:
+
+If only one number (base case)
+  Quit
+Else
+Sort left half of numbers
+Sort right half of numbers
+Merge sorted halves
+
+**Idea of focusing only on the smallest numbers of 2 sublists
+- remember merge sort uses extra space (in the form of extra arrays or auxiliary arrays I think)
+
+
+theta(n log n) merge sort
+
+Faster algorithm --> more space or time to code opportunity cost 
 
