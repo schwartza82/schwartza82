@@ -1,0 +1,242 @@
+//Efficency of Algorithms
+Abstract memory as a grid
+- Think of array of memory inside of your computer is a sequence of closed doors + ur computer has to open the doors one at a time
+- Where we get indices 
+
+//Searching algorithm
+- doors --> bool for number
+
+Example: linear searching for monopoly money in 7 lockers
+For each door from left to right
+  If 50 is behind door
+    Return true
+Return false //goes to the end of the code
+
+For each door from left to right
+  If 50 is behind door
+    Return true
+  Else
+  Return false
+
+USAGE OF ELSE HERE IS WRONG BECAUSE YOU WOULD END UP CANCELLING THE CODE BEFORE YOU FOUND THE 50
+
+In code this would look like
+
+For i from 0 to n-1
+  If 50 is behind doors[i]
+    Return true
+Return false
+
+Example: Binary search for 50 dollar monopoly money in 7 lockers
+
+If no doors left
+  Return false 
+If 50 is behind the middle door
+  Return true
+Else if 50 < middle door
+  Search left half
+Else if 50 > middle door
+
+More pseudo code
+  
+If no doors left 
+  Return false
+If 50 is behind doors[middle]
+  Return true
+Else if 50 < doors[middle]
+  Search doors[0] through doors[middle - 1]
+Else if 50 > doors[middle]
+  Search doors[middle + 1] through doors[n-1]
+
+//"Big O" notation --> refers to the order or magnitude of an algorithm's running time BUT it also describes more specifically an upper bound (upper bound = more steps and is bad)
+n --> O(n)
+n/2 --> O(n) **n and n/2 behave similarly**
+log_2(n) --> O(log n)
+- Shape of the curve that models size of problem by time to solve is what we care about the most
+
+//Big O cheat sheet ordered from slowest to fastest
+O(n^2) --> Selection sort
+O(n log n)
+O(n) --> upper bound for linear search 
+O (log n) --> upper bound for binary search 
+O(1) --> "order of 1" refers to a fixed number of steps that never changes no matter how big n is
+
+//Omega (omega symbol) describes the lower bound and usually the best case for an algorithm
+
+Omega(n^2)
+Omega(n log n)
+Omega(n)
+Omega(log n)
+Omega(1) --> Someone could get super lucky during linear search and found the 50 dollars as well as with the binary search 
+
+Greek theta symbol means a concidents of both upper and lower bound
+- Counting is a good example of this
+
+//Very very basic search algorithm
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    //static array = array that never changes
+    int numbers[] = {20, 500, 10, 5, 100, 1, 50};
+
+    int n = get_int("Number: ");
+    for (int i = 0; i < 7; i++) //pseudo code
+    {
+        if(numbers[i] == n)
+        {
+            printf("Found\n");
+            return 0;
+        }
+    }
+    printf("Not found\n");
+    return 1;
+}
+
+
+String search algorithm that DOESN'T WORK
+#include <cs50.h>
+#include <stdio.h>
+
+int main(void)
+{
+    string strings[] = {"battleship", "boot", "cannon", "iron", "thimble", "top hot"};
+
+    string s = get_string("String: ");
+    for (int i = 0; i < 7; i++) //pseudo code
+    {
+        if(strings[i] == s)
+        {
+            printf("Found\n");
+            return 0;
+        }
+    }
+    printf("Not found\n");
+    return 1;
+}
+- in string library string.h there's a function called strcmp 
+- compares 2 strings by character and returns 0 if they're equal
+- strcmp returns a positive or negative number based on things like whether a string comes alphabetically first or later 
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    string strings[] = {"battleship", "boot", "cannon", "iron", "thimble", "top hot"};
+
+    string s = get_string("String: ");
+    for (int i = 0; i < 6; i++) //pseudo code
+    {
+        if(strcmp(strings[i], s) == 0)
+        {
+            printf("Found\n");
+           // return 0;
+        }
+    }
+    printf("Not found\n");
+    //return 1;
+}
+Here, we take out return 0 and return 1. 
+Get output when we type 'battleship' of:
+Found
+Not Found
+b/c loop keeps running after found loop 
+- return 0 is the most important but return 1 is helpful for making an error code
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    string names[] = {"Carter", "David"};
+    string numbers[] = {"+1-617-495-1000", "+1-949-468-2750"};
+
+    string name = get_string("Name: ");
+    for (int i = 0; i < 2; i++)
+    {
+        if (strcmp(names[i], name) == 0)
+        {
+            printf("Found %s\n", numbers[i]);
+            return 0;
+        }
+    }
+    printf("Not found\n");
+    return 1;
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+typedef struct //DIY your own datatype
+{
+    string name;
+    string number;
+}
+person; //name of type you want to create
+
+int main(void)
+{
+    person people[2];
+
+    people[0].name = "Carter";
+    people[0].number = "+1-617-495-1000";
+
+    people[1].name = "David";
+    people[1].number = "+1-949-468-2750";
+
+    string name = get_string("Name: ");
+    for (int i = 0; i < 2; i++)
+    {
+        if (strcmp(people[i].name, name) == 0)
+        {
+            printf("Found %s\n", people[i].number);
+            return 0;
+        }
+    }
+    printf("Not found\n");
+    return 1;
+
+}
+//Sorting!
+- sorting data is kinda slow 
+
+Pseudo code
+For i from 0 to n-1
+  Find smallest number between numbers[i] and numbers[n-1]
+  Swap smallest number with numbers[i]
+
+//Bubble sort 72541603
+-takes a bite out of a problem so there's only n-1 problem to solve
+
+Repeat n-1 times
+  For i from 0 to n-2
+    If numbers[i] and numbers[i+1] out of order
+      Swap them
+  If no swaps
+    Quit
+
+(n-1) +(n-2) + (n-3) +...+ 1
+=>
+n(n-1)/2
+==>
+(n^2 - n)/2
+==>
+n^2/2 - n/2
+==>
+O(n^2)
+
+(n-1) x (n-1)
+==>
+n^2 - 1n - 1n +1
+==>
+n^2 - 2n +1
+
+Therefore
+O(n^2) - "Asymtomically bubble sort has an order of n^2 making it effectivly the same as selection sort"
+
+Bubble sort can be 
+
