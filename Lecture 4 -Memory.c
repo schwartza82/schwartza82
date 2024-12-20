@@ -68,11 +68,11 @@ $ ./addresses
 //Introduction to Data Types and Strings in C
 
 string s = "Hi!" 
-- double quotes add /0 (null) at the end of string. Extra byte for free!
+- double quotes add /0 (nul) at the end of string. Extra byte for free!
 - single quotes for char don't do that
 
 Why is it sufficient for a variable to only store the 1st byte address and not all of the bytes
-- Because of the design of strings, we always null terminate them so it only sufficiences ot know the 1st byte's address
+- Because of the design of strings, we always nul terminate them so it only sufficiences ot know the 1st byte's address
 
 //There is no such thing as a "string" keyword in C
 **strings are actually a pointer to a character c**
@@ -181,7 +181,248 @@ $ ./addresses
 -continous 1 byte away from each other
 
 //Pointer arithmetic
+#include <stdio.h>
+int main(void)
+{
+    char *s = "HI!";
+    printf("%c\n", *s);
+    printf("%c\n", *(s+1));
+    printf("%c\n", *(s+2));
+}
+$ make addresses
+$ ./addresses
+H
+I
+!
 
+-square bracket notation is syntactic sugar for this
+
+//randomly touching random bytes of memory cuz we crazy
+#include <stdio.h>
+int main(void)
+{
+    char *s = "HI!";
+    printf("%c\n", *s);
+    printf("%c\n", *(s+1));
+    printf("%c\n", *(s+50000));
+}
+$ make addresses
+$ ./addresses
+H
+I
+Segmentation fault (core dumped)
+- here, your touching a segment of memory not allocated to you
+
+//Harnessing Pointer Arithmetic with Strings
+
+#include <stdio.h>
+int main(void)
+{
+    char *s = "HI!";
+    printf("%s\n", s);
+    printf("%s\n", s+1);
+    printf("%s\n", s+2);
+}
+
+$ make addresses
+$ ./addresses
+HI!
+I!
+- string = a sequence of characters identified by their first byte
+- printing out a character and then everything after that until the nul character
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    string s = get_string("s: ");
+    string t = get_string("t: ");
+
+    if (*s == *t)
+    //* means "go there"
+    //At an address 0x123 and 0x546 there is a character H
+    //compares 1st character of both strings but not every other one
+    {
+        printf("Same\n");
+    }
+    else
+    {
+        printf("Different\n");
+    }
+}
+
+//pedantic usage of pointer arithmetic to get character
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    string s = get_string("s: ");
+    string t = get_string("t: ");
+
+    if (*s == *t && *(s+1) == *(t+1)) //can do that for every character if you really wanted to
+    //* means "go there"
+    //At an address 0x123 and 0x546 there is a character H
+    {
+        printf("Same\n");
+    }
+    else
+    {
+        printf("Different\n");
+    }
+}
+
+//2 "strings" (char *p pointer for char) separated by a certain number of bytes
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    string s = get_string("s: ");
+    string t = get_string("t: ");
+
+    printf("%p\n", s);
+    printf("%p\n", t);
+}
+$ make comparestring
+$ ./comparestring
+s: HI!
+t: HI!
+0x59f2f35066b0
+0x59f2f35066f0
+- ending b0 vs f0 suggests seperation by certain number of bytes (the rest of the characters after H)
+
+//Copying strings and memory allocation
+
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    string s = get_string("s: ");
+    string t = s;
+
+    t[0] = toupper(t[0]);
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+}
+$ code copy.c
+$ make copy
+$ ./copy
+s: hi!
+s: Hi!
+t: Hi!
+
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    char* s = get_string("s: ");
+
+    char* t = s;
+    //value of address being copied as in s and t have the same memory address
+    //t and s are NOT copies of the underlying characters
+
+    if(strlen(t) > 0)
+     //blindly assuming there's going to be at least one character in s so need if statement
+    t[0] = toupper(t[0]);
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+}
+
+    //using malloc and free to successfully copy a string
+    malloc = memory allocation. Used to ask the operating system (Mac OS, Linux, etc) for some number of bytes of memory. returns 1st bite of memory if it's found free for you
+        free = when you're done with some chunk of memory you can "free it" by passing in that same address and just hand it back to your operating system. Lets your operating system know you're free with a chunk of memory and that it can let you use said memory for something else later
+        
+    **if you use malloc to ask for more and more memory without ever free the memory, you'll run out of memory and you'll computer will likely freeze
+
+#include <stdlib.h>
+#include <string.h>
+
+int main(void)
+{
+    char* s = get_string("s: ");
+
+    char* t = malloc(strlen(s) + 1);
+    //asks malloc for how many bytes the user types in plus the nul character
+    //t is now a pointer to a random chunk of free space
+
+    for (int i = 0, n = strlen(s) + 1; i< n; i++)
+        //included optimization of strlen(s) + 1 function so we don't have to keep calling it
+        //here, n never changes so compares static value n to dynamic value i
+    {
+        t[i] = s[i];
+        //copying from right to left for each character in s
+    }
+
+    if (strlen(t) > 0)
+    {
+        t[0] = toupper(t[0]);
+    }
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+}
+$ make copy
+$ ./copy
+s: hi!
+s: hi!
+t: Hi!
+
+//NULL vs nul 
+nul = /0 a singer character
+NULL = point (address) to 0. by convention, nothing should go there
+
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main(void)
+{
+    char* s = get_string("s: ");
+    if (s == NULL)
+    //If too much memory is used get_string returns NULL
+    {
+        return 1;
+    }
+
+    char* t = malloc(strlen(s) + 1);
+    if (t == NULL)
+    //if user asks for too much memory
+    {
+        return 1;
+    }
+
+    strcpy(t, s);
+
+    if (strlen(t) > 0)
+    {
+        t[0] = toupper(t[0]);
+    }
+
+    printf("s: %s\n", s);
+    printf("t: %s\n", t);
+
+    free(t);
+    //If you allocate memory with maloc or certain other function, you have to free the memory when you're done with it
+    //don't need to free memory from get_string b/c cs50 library automatically frees it for you
+
+    return 0;
+}
 
 
 
