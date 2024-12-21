@@ -734,6 +734,46 @@ get_long
 get_string
 
 
+//manipulating files
+
+//Save names and numbers to a CSV file (like a simple spreadhsset)
+
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+phonebook.c
+int main(void)
+{
+    FILE *file = fopen("phonebook.csv", "a"); //need to use addresses/pointers to manipulate files
+    //fopen opens a file and returns a pointer in said file in memory
+    //file name is phonebook.csv and this example is in append mode which will allow more names and numbers to be added to this file
+    string name = get_string("Name: ");
+    string number = get_string("Number: ");
+
+    fprintf(file, "%s, %s,\n", name, number);
+    //fprintf requires you to say what file you want to write
+
+    fclose(file);
+}
+
+phonebook.csv
+name, number
+
+Terminal:
+$ make phonebook
+$ ./phonebook
+Name: David 
+Number: 1+555+555+5555
+
+
+phonebook.csv
+name, number
+David , 1+555+555+5555,
+
+//if you downloaded his to your mac you could double click the csv file and excel or apple numbers would open up!
+
+bmp file formate are maps of bits
 
 09:10:19  Understanding Hexadecimal Representation
 09:19:54  Getting the Address of a Variable
@@ -744,5 +784,4 @@ get_string
 10:47:25  Handling Garbage Values
 11:09:12  Swapping values using pointers in C,
 11:13:00  Memory limitations and potential issues in C,
-11:27:18  Importance of Data Structures
 
