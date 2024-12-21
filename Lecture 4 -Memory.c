@@ -418,11 +418,320 @@ int main(void)
     printf("t: %s\n", t);
 
     free(t);
-    //If you allocate memory with maloc or certain other function, you have to free the memory when you're done with it
+    //If you allocate memory with malloc or certain other function, you have to free the memory when you're done with it
     //don't need to free memory from get_string b/c cs50 library automatically frees it for you
 
     return 0;
 }
+
+//fixing bugs
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    int *x = malloc(3 * sizeof(int));
+    //asking for 3 things times how big an int is
+    x[1] = 72;
+    x[2] = 72;
+    x[3] = 33;
+}
+
+$ make memory
+$ ./memory
+$ valgrind ./memory
+==3930== Memcheck, a memory error detector
+==3930== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==3930== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==3930== Command: ./memory
+==3930== 
+==3930== Invalid write of size 4
+==3930==    at 0x109170: main (memory.c:10)
+==3930==  Address 0x4b9f04c is 0 bytes after a block of size 12 alloc'd
+==3930==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3930==    by 0x109151: main (memory.c:6)
+==3930== 
+==3930== 
+==3930== HEAP SUMMARY:
+==3930==     in use at exit: 12 bytes in 1 blocks
+==3930==   total heap usage: 1 allocs, 0 frees, 12 bytes allocated
+==3930== 
+==3930== 12 bytes in 1 blocks are definitely lost in loss record 1 of 1
+==3930==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3930==    by 0x109151: main (memory.c:6)
+==3930== 
+==3930== LEAK SUMMARY:
+==3930==    definitely lost: 12 bytes in 1 blocks
+==3930==    indirectly lost: 0 bytes in 0 blocks
+==3930==      possibly lost: 0 bytes in 0 blocks
+==3930==    still reachable: 0 bytes in 0 blocks
+==3930==         suppressed: 0 bytes in 0 blocks
+==3930== 
+==3930== For lists of detected and suppressed errors, rerun with: -s
+==3930== ERROR SUMMARY: 2 errors from 2 contexts (suppressed: 0 from 0)
+
+- invalidly writing to 4 bytes that we shouldn't be because not indexed at 0
+
+==3930== 12 bytes in 1 blocks are definitely lost in loss record 1 of 1 
+    -aka "memory is lost" so we should free x at the end of the program
+
+FIXED BUGS!
+    
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    int *x = malloc(3 * sizeof(int));
+    if (x == NULL)
+    {
+        return 1;
+    }
+    x[0] = 72;
+    x[1] = 72;
+    x[2] = 33;
+    free(x);
+    return 0;
+}
+
+$ valgrind./memory
+bash: valgrind./memory: No such file or directory
+$ make memory
+$ valgrind ./memory
+==6162== Memcheck, a memory error detector
+==6162== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==6162== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==6162== Command: ./memory
+==6162== 
+==6162== 
+==6162== HEAP SUMMARY:
+==6162==     in use at exit: 0 bytes in 0 blocks
+==6162==   total heap usage: 1 allocs, 1 frees, 12 bytes allocated
+==6162== 
+==6162== All heap blocks were freed -- no leaks are possible
+==6162== 
+==6162== For lists of detected and suppressed errors, rerun with: -s
+==6162== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+
+//Handling Garbage Values
+- Generally, in C, if you don't initalize a variable or you don't iniitalize an array with explicit values there are going to be "garbage values"
+- Garbage values = remnants of that memory being used before for something else while your program is running
+- Important especially for big programs
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    int scores[1024];
+    for (int i = 0; i < 1024; i++)
+    {
+        printf("%i\n", scores[i]);
+    }
+}
+- here, we're asking for 1024 bytes and will inevitably end up poking around in bytes w random addresses and get random numbers instead of 0
+
+ALWAYS INITALIZE YOUR VARIABLES YOURSELF OR BY PROMPTING THE USER
+
+
+//manipulating values of pointers
+
+int main(void)
+{
+    int *x; //pointer called x that will store the address of an integer
+    int *y;  //pointer called y that will store the address of an integer
+
+    x = malloc(sizeof(int)); //allocating enough memory to fit 1 integer and store address malloc finds in x
+
+    *x = 42; //go to x and put the number of 42 there (at an address)
+    *y = 13; //since we didn't ask the computer to allocate any memory, y was not initialized with an equal sign at any point to anything. THEREFORE y HAS A GARGABE VALUE INSIDE OF IT VERY BAD
+
+    y = x;
+
+    *y = 13;
+}
+
+//Alternative to manipulate pointers that's good
+
+int main(void)
+{
+    int *x; //pointer called x that will store the address of an integer
+    int *y;  //pointer called y that will store the address of an integer
+
+    x = malloc(sizeof(int)); //allocating enough memory to fit 1 integer and store address malloc finds in x
+
+    *x = 42; //go to x and put the number of 42 there (at an address)
+
+    y = x;
+
+    *y = 13; //have dereferenced y with star y after actually giving it a value although this value is a duplicate value (y was initialized at 42 I think?!?!)
+}
+
+//BINKY POINTER EXPLAINATION
+
+//this code allocates 2 pointers that can point to integers
+//pointers initially don't point to anything. pointees need to be set up in a separate step
+int *x;
+int *y;
+
+//allocating a pointee
+malloc(sizeof(int))
+
+//left hand side sets x to point to the pointee
+x = malloc(sizeof(int))
+
+//Deferencing the pointer x to store the number 42 into its pointed. Tink of it like following the arrow to store it's pointee
+*x = 42;
+
+//something like *y = 13; wouldn't work b/c the pointee for y hasn't been set up
+//here the pointer y is being set to point to the same thing as x (the malloc(size(int)) I think)
+//now y is fixed!!
+y = x; 
+
+//since the pointers are both sharing the 13, they both see the 13
+*y = 13;
+
+//swapping values using pointers
+- use of temporary variables. Visualization of using a 3rd cup to transfer different liquids from two glasses
+
+Logic in code would look like: 
+void swap(int a, int b)
+{
+    int tmp = a; //tmp = temporary
+    a = b;
+    b = tmp;
+}
+**IN C THIS CODE DOESN'T WORK
+
+
+#include <stdio.h>
+
+void swap(int a, int b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(x, y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int a, int b)
+{
+    int tmp = a; //tmp = temporary
+    a = b;
+    b = tmp;
+}
+- When you call a function and pass in 2 arguments like A and B you're passing those arguments by *value*(copies of those values aka literally 1 and 2)
+- By reference = passing by addresses of variables
+- need to pass by reference to actually swap variables
+
+Concept of scope 
+- a and b in swap function exist only between curly brackets of the swap function. No effect on main which has different variables x and y 
+
+Different regions/segments of a computers memory top to bottom
+
+Machine code
+    |
+Globals
+    |
+Heap (heap of memory where malloc grabs memory from!!)
+    |
+Stack (The stack is where functions have variables and have arguments stored temporarily. Think of how a stack of plates grows upwards. )
+
+Use conditionals to make sure the heap and the stack don't collide
+
+//explaining swap example in the stack
+
+
+void swap(int a, int b)
+{
+    int tmp = a; //tmp = temporary
+    a = b;
+    b = tmp;
+}
+
+Calling the main function of any program, a slice of a memory called a "frame" is called at the bottom of the stack
+- main has 2 variables x and y, 1 and 2 taking up chunks of memory in main 
+
+If main calls a function like swap we get another frame (a slice). Once swap is done executing (explicitly returns or finished running) this memory is freed up. 
+- Technically still there abd garbage values remain 
+
+*when we call swap, it will consider the 2 variables in main and give us three variables: a, b and temp
+
+now:
+int tmp = a; //temp takes a copy of a
+a = b; //a takes on a copy of b
+b = temp; //b gets a copy of temp. temp is empty and has the garbage value 1
+
+WHEN SWAP RETURNS x and y are untouched
+
+//fixing swap
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(x, y);
+    printf("x is %i, y is %i\n", x, y);
+}
+void swap(int *a, int *b) //a and b are addresses of integers
+{
+    int tmp = *a; //tmp will store the value of at *a (1)
+    *a = *b; //following treatsure map to other mailbox and then setting it to the whatever is at the value of b. value at *b = 1
+    *b = tmp; //go to b and change it to the temporary variable which is the same as a, so that's where the final value gets swapped. Start at b and go to b (value is 1) and store that value in temp
+}
+***just like you can declare variables as storing addresses, you can declare arguments to functions AKA parameters as taking addresses
+- circumventing local scope of variables
+
+//FIXED SWAP FINAL 
+
+#include <stdio.h>
+void swap(int *a, int *b);
+
+int main(void)
+{
+    int x = 1;
+    int y = 2;
+
+    printf("x is %i, y is %i\n", x, y);
+    swap(&x, &y);
+    printf("x is %i, y is %i\n", x, y);
+}
+
+void swap(int *a, int *b)
+{
+    int tmp = *a; //tmp = temporary
+    *a = *b;
+    *b = tmp;
+}
+
+Output:
+$ make swap
+$ ./swap
+x is 1, y is 2
+x is 2, y is 1
+
+//Memory limitations and potential issues in C
+- heap overflow = touching memory in the heap you shouldnt touch (from the stack I think)
+- stack overflow = touching memory in the stack you shouldn't touch
+
+Buffer overflow =  a chunk of memory that the computer is using for some purpose
+
+//Final revelation
+
+cs50 library: 
+get_char
+get_double
+get_float
+get_int
+get_long 
+get_string
 
 
 
@@ -436,3 +745,4 @@ int main(void)
 11:09:12  Swapping values using pointers in C,
 11:13:00  Memory limitations and potential issues in C,
 11:27:18  Importance of Data Structures
+
