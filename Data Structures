@@ -1,0 +1,259 @@
+Importance of Data Structures
+- Digitally stiches together ideas and concepts in memory with pointers
+- Pointers let you store addresses in memory (similar to variables except with more flexibility I think)
+
+Abstract data type
+- similar to a type in C but in the sense that it has properties BUT underlying implementation details are up to you
+- they can represent one thing but how you implement it allows you some discretion underneath the hood
+
+Abstract data type: Queues
+- FIFO: First In First Out data structures
+- "First person in the line should be served first"
+
+Operations for queues
+1. Enqueue: adding to the of the queue
+2. Dequeue: thing at the front of the queue is substracted from it when it their time to go
+
+Abstract data type: Stacks
+- think about a stack of trays: you have to take the top tray off of the stack too
+- LIFO: Last In First Out
+- Grab last added one first
+- Gmail is technically a stack b/c the most recent email is right at the top
+- Side effect could look like no one ever usingn the dining tray at the bottom of the stack
+
+Operations for stacks
+1. Push: you push something on top of a stack
+2. Pop: removing something from the top of the stack
+
+Implementing stack example:
+
+const int CAPACITY = 50;
+
+typedef struct
+{
+  person people[CAPACITY];
+  int size;
+}
+stack;
+
+- this is an array called people of some capacity (capacity is the constant)
+- every element in that array is a "person" structure
+- Capacity is how high the sack **could** be while the int size is how high the stack **is at any given moment**
+
+Disadvantages of using an array in this example:
+- finite capacity 
+- doesn't allow the stack to grow 
+- but you also don't want to allocate memory you don't need (wasteful)
+
+Array - first data structure
+- chunk of memory where element are stored back to back to back
+- an "array of contiguous memory"
+
+//square brackets = user friendly way to put integers in the right chunk they're in
+
+#include <stdio.h>
+
+int main(void)
+{
+   int *list = malloc(3 * sizeof(int));
+
+    //check if we have enough memoery 
+   if (list == NULL)
+   {
+    return 1;
+   }
+
+   list[0] = 1;
+   list[1] = 2;
+   list[2] = 3;
+}
+
+
+//fixing implicitly declaring error 
+
+list.c:5:16: error: call to undeclared library function 'malloc' with type 'void *(unsigned long)'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+
+#include <stdio.h>
+
+int main(void)
+{
+   int *list = malloc(3 * sizeof(int));
+   if (list == NULL)
+   {
+    return 1;
+   }
+
+   list[0] = 1;
+   list[1] = 2;
+   list[2] = 3;
+
+   for (int i = 0; i < 3; i++)
+   {
+    printf("%i\n", i);
+   }
+}
+
+include stdlib for malloc function 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+   int *list = malloc(3 * sizeof(int));
+   if (list == NULL)
+   {
+    return 1;
+   }
+
+   list[0] = 1;
+   list[1] = 2;
+   list[2] = 3;
+
+   for (int i = 0; i < 3; i++)
+   {
+      printf("%i\n", list[i]);
+   }
+}
+
+**How to do add an extra chunk of memory to an array of size 3**
+**Copying old array into the new array**
+
+**note this is pretty inefficient
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+   int *list = malloc(3 * sizeof(int));
+   if (list == NULL)
+   {
+    return 1;
+   }
+
+   list[0] = 1;
+   list[1] = 2;
+   list[2] = 3;
+
+//... (interesting complicated code)
+
+    int *tmp = malloc(4 * sizeof(int));
+    if (tmp == NULL)
+    {
+        free(list); //so we don't leak memory
+        return 1;
+    }
+
+   for (int i = 0; i < 3; i++)
+   {
+        tmp[i] = list[i];
+   }
+   tmp[3] = 4; //this is hard coded (can make this better)
+
+   free(list);
+
+   //inform computer that we want the variable called 'list' to point at the new chunk of memory
+   //list now points to the new chunk!
+   list = tmp;
+
+   for (int i = 0; i < 4; i++)
+   {
+        printf("%i\n", list[i]);
+   }
+
+    free(list); //this frees the array of size 4 **free tmp works well too**
+    return 0; 
+}
+
+-list is the variable we use longer term
+- tmp pointer is needed because another list pointer would just have created a memory leak 
+
+//let's make the above process more streamline with realloc 
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+   int *list = malloc(3 * sizeof(int));
+   if (list == NULL)
+   {
+    return 1;
+   }
+
+   list[0] = 1;
+   list[1] = 2;
+   list[2] = 3;
+
+//... (interesting complicated code)
+
+    int *tmp = realloc(list, 4 * sizeof(int)); 
+//use tmp here instead of list in case our if check fails. If that happens, list would be overrided with NULL and we wouldn't know the actual values in list (memory leak)
+//realloc takes 2 arguments: the chunk of memory you want to grow or shrink and the new size you want
+     //all of the copying is now handled
+    if (tmp == NULL)
+    {
+        free(list); //so we don't leak memory
+        return 1;
+    }
+
+    list = tmp; //immediately remember that the new list points at the new chunk of memory
+
+   list[3] = 4; //new final location in the NEW LIST
+
+//don't need to free the list b/c realloc does that for you
+//realloc is very smart and will reserve extra memory if it sees empty gargabe values next to the existing chunk of memory your using
+    
+
+   for (int i = 0; i < 4; i++)
+   {
+        printf("%i\n", list[i]);
+   }
+
+   free(list);
+   return 0;
+}
+
+//implementing a stack or queue using a pointer and then malloc then the stack/queue can greow or shrink by using realloc
+//clever way to use . and * together: literarly use a -> on the keyboard (looks like an arrow)
+
+LINKED LISTS DATA STRUCTURE: let's build it with struct, dots, and stars
+
+- suppose we have non-contigious values (not back-to-back so not an array) in a memory grid
+- what if we could stich together these values: let's use memory
+
+Use memory to connect the 
+
+0x0 (NULL value represents an empty pointer) - use it at the end of the line while creating a list 
+
+**abstraction** If we want to remember where all of these numbers are in memory: let's ourself room for a pointer (called list by convention) and store in that pointer a value that kickstarts the whole process (like a treasure map)
+
+- data and metadata related to the data we care about is can be imaged as forming a larger rectangle called a "node"
+
+Do traditional arrays start with a pointer that's outside of the structure?
+- short answer: no
+- the name of the array doesn't take up space???
+- the extra space is needed so you can determine what the size of a list is (more responsibility than just the symbol of the array)
+
+Singly-linked lists go only in one direction 
+
+Doubly linked lists can require adding another box to go in the opposite direction or connecting the last node in a circle (doable but hard) 
+
+typedef struct
+{
+  int number;
+  node *next;
+}
+node;
+
+11:27:18  Importance of Data Structures
+12:24:03  Adding Elements to Linked List
+12:34:00  Explanation of implementing a stack using linked lists,
+12:44:00  Iterating over the linked list,
+12:51:00  In this section, the main focus is on understanding the running time of various operations in linked lists.
+12:56:00  This section introduces the concept of binary search trees (BSTs) as a way to achieve both binary search and dynamism.
+13:12:24  Balanced binary search trees and algorithm complexity
+13:18:06  Hashing and hash functions
+13:24:38  Understanding Hash Tables and Memory Usage
+
