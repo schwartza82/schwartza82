@@ -177,7 +177,7 @@ int main(void)
 int main(void)
 {
    int *list = malloc(3 * sizeof(int));
-   if (list == NULL)
+   if (list == NULL) //indicates the list is initalized as empty
    {
     return 1;
    }
@@ -246,6 +246,49 @@ typedef struct
   node *next;
 }
 node;
+
+
+Linked List creation 
+
+node *list = NULL; //linked list of size 0
+
+node *n = malloc(sizeof(node)); //allocate bytes to node. sizeof() function figures this out for you
+//*n has garbage value by default
+//node has a number and a next field
+//copying from right to left side is what creates the pointer
+
+//deferencing a pointer that is going to an address and going inside of the structure using the dot notation
+(*n).number = 1;
+//*n means to start at a variable and follow the arrow
+//dot operator allows us to choose what field we're going to. In this case we're going to the number field 
+//() preserves order of operation for *n but you can also just do: n -> number = 1;
+
+n -> next = NULL
+//set the garbage value to 0 so we don't get confused
+
+list = n; 
+//allows us to remember that we have a list
+
+//adding the number 2
+node *n = malloc(sizeof(node));
+//brings back n pointer (but it's currently a garbage value)
+//malloc gives a 2nd chunk of memory w garbage values by default
+//copying from right to left creates the VALID pointer that points the fields within the node
+
+//now we can do:
+n -> next = NULL;
+
+//HOW DO WE COMBINE THE TWO NUMBERS: we want to update the list
+
+//list = n; loses the original list pointer
+//instead make the node with 2 point to 1
+
+n ->next = list;
+//n arrow next should equal the current list 
+//adds redundancy by having 2 pointers pointing to the original list so we can now do:
+list = n; 
+//now list is equal to the same thing n is equal to 
+
 
 11:27:18  Importance of Data Structures
 12:24:03  Adding Elements to Linked List
