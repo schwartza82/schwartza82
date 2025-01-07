@@ -509,16 +509,53 @@ MORE DATA STRUCTURES
 Hasing is about taking as input some value and outputting a simple version thereof
 - think sorting a deck of cards in a bucket by suite so you reduce the large domain of the card deck to a smaller range of the suits 
 
+Hashmap example: contacts
+- use an array to get to the 1st letter of the name 
+- if you have a "collision" where a name's already there, stich the names with the same letter together through a linked list
+- Can decrease collisions by adding more buckets (think a Ha, Hb, Hc bucket in the H bucket) that said doing this increases memory used
 
-13:18:06  Hashing and hash functions (current place)
+These nodes in the tree can be represented in code by:
+typedef struct
+{
+  char *name;
+  char *number;
+  struct node *next;
+}
+node; 
 
-11:27:18  Importance of Data Structures
-12:24:03  Adding Elements to Linked List
-12:34:00  Explanation of implementing a stack using linked lists,
-12:44:00  Iterating over the linked list,
-12:51:00  In this section, the main focus is on understanding the running time of various operations in linked lists.
-12:56:00  This section introduces the concept of binary search trees (BSTs) as a way to achieve both binary search and dynamism.
-13:12:24  Balanced binary search trees and algorithm complexity
-13:18:06  Hashing and hash functions
-13:24:38  Understanding Hash Tables and Memory Usage
+The hash table itself is just an array:
+node *table[26];
 
+//think of hash function as a black box
+//Albus when passed has a value of 0 b/c first letter A pertains to A bucket which = 0
+
+Hash table has a run time of O(n) at it's worst, but a good hash function is more like O(n|k) where k is a constant (number of buckets)
+
+
+TRIES DON'T DEVOLVE INTO O(n)
+- a tree each of whose nodes is an array
+
+Here's how a try works for finding a name 
+- you have a big node (a big rectangle) that's an array where you index the 1st letter of the name
+- You add another node below the 1st node such that one is connected to the other and index that node for the 2nd letter
+- Add more nodes with letters and at the last node flag that it's the last node in the data structure 
+- Can reuse nodes for names that are similar because they have a common prefix (think Harry, Hagrid, Hermione)
+
+- Running time of a trie is O(1) b/c it's dependent only on the length of the person's name which we know is finite. Therefore, the run time is bounded.
+
+- Price of a try is memory use and memory waste
+
+NODES IN A TRIE LOOK LIKE:
+typedef struct node
+{
+  char *number;
+  struct node *children[26];
+}
+node;
+//don't need to store name in the node b/c it's implicit 
+
+//variable that stoes the try is
+node *trie
+
+
+//arise even work with names that are superstrings of each other like Alex and Alexander
