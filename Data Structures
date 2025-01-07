@@ -290,6 +290,228 @@ list = n;
 //now list is equal to the same thing n is equal to 
 
 
+ITERATING OVER LINKED LISTS
+//Still need to write a function to free any nodes allocated successfully earlier
+#include <stdio.h>
+#include <stdlib.h>
+
+//declaring a node
+typedef struct node
+{
+    //give every node a number
+    int number;
+
+    //then, give every node a pointer the next element
+    struct node *next;
+}
+//simplify the whole name as node
+node;
+
+//creating a list as an actual linked list instead of an array
+//we want to run the program ./list and type in the numbers we want to add to it. Then we want the program to allocate the numbers to nodes and stich the nodes together
+
+//argc = argument count and refers to the number of command-line arguments passed to the program (including the program's name itself). User typing 4 means ./list + 3 ints
+//argv = argument vector. Here, argv[] holds the array of strings (char*)
+int main(int argc, char *argv[])
+{
+    //pointer that reps the start of a list; NULL means the list is empty
+    node *list = NULL;
+
+    //iterating over the command line arguments
+    //starting for loop at 1 b/c the 0th value is the name of the program
+    //iterating to argc
+    for(int i = 1; i < argc; i++)
+    {
+        //atoi() converts strings that look like numbers (1, 2, 23) into numbers
+        //number is the variable that stores this info as an int
+        int number = atoi(argv[i]);
+
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            return 1;
+        }
+        //update the number field of the new node
+        //store whatever value the user typed in first
+        n->number = number;
+
+        //prepend (add) the return value to the list
+        n->next = NULL;
+
+        //new node points to the existing list
+        n->next = list;
+
+        //now the actual list is updated
+        list = n;
+    }
+
+     //ITERATING OVER A LINKED LIST
+     //define a temporary variable - by convention it will be called ptr (pointer) - that points at the first node in the list, then iterates to the 2nd and etc until it points to NULL
+     node *ptr = list;
+     //while poitner is valid (pointing to a number)
+     while(ptr != NULL)
+     {
+        //here, the most recent node
+        printf("%i\n", ptr->number);
+        ptr = ptr->next;
+     }
+
+//2nd loop for freeing memory
+    ptr = list;
+    while (ptr != NULL)
+    {
+        //need temporary value
+        node *next = ptr->next;
+        free(ptr)
+        ptr = next;
+    }
+
+}
+
+ANOTHER WAY TO ITERATE OVER NODES IN LISTS
+#include <stdio.h>
+#include <stdlib.h>
+
+//declaring a node
+typedef struct node
+{
+    //give every node a number
+    int number;
+
+    //then, give every node a pointer the next element
+    struct node *next;
+}
+//simplify the whole name as node
+node;
+
+//creating a list as an actual linked list instead of an array
+//we want to run the program ./list and type in the numbers we want to add to it. Then we want the program to allocate the numbers to nodes and stich the nodes together
+
+//argc = argument count and refers to the number of command-line arguments passed to the program (including the program's name itself). User typing 4 means ./list + 3 ints
+//argv = argument vector. Here, argv[] holds the array of strings (char*)
+int main(int argc, char *argv[])
+{
+    //pointer that reps the start of a list; NULL means the list is empty
+    node *list = NULL;
+
+    //iterating over the command line arguments
+    //starting for loop at 1 b/c the 0th value is the name of the program
+    //iterating to argc
+    for(int i = 1; i < argc; i++)
+    {
+        //atoi() converts strings that look like numbers (1, 2, 23) into numbers
+        //number is the variable that stores this info as an int
+        int number = atoi(argv[i]);
+
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            return 1;
+        }
+        //update the number field of the new node
+        //store whatever value the user typed in first
+        n->number = number;
+
+        //prepend (add) the return value to the list
+        n->next = NULL;
+
+        //new node points to the existing list
+        n->next = list;
+
+        //now the actual list is updated
+        list = n;
+    }
+
+     //ITERATING OVER A LINKED LIST WITH FOR LOOP INSTEAD OF WHILE LOOP
+     for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+     {
+        print("%i\n", ptr->number);
+        ptr = ptr->next;
+     }
+//2nd loop for freeing memory
+    ptr = list;
+    while (ptr != NULL)
+    {
+        //need temporary value
+        node *next = ptr->next;
+        free(ptr)
+        ptr = next;
+    }
+
+}
+
+NEW SECTION: In this section, the main focus is on understanding the running time of various operations in linked lists.
+Searching a linked list for some value has a running time of O(n)
+- inserting elements into the linked list using the prepend design has a constant run time (finite and fixed) O(1)
+
+Appending a list - queue method
+- Append design has a run time of O(n)
+- inserting elements is now O(n) which isn't great
+
+SORTED LIST - SWITCHING BETWEEN PREPEND AND APPEND
+- Search run time is O(n)
+- In worst case there's a run time of O(n)
+
+This section introduces the concept of binary search trees (BSTs) as a way to achieve both binary search and dynamism.
+- thinking about data structures as having width and height
+- "trees" in cs grow downwards
+- Linked lists let you insert more elements without having to copy or move everything else around. This is something you don't get with arrays
+- binary search trees let you store what was previously array data but now each of these nodes can be anywhere in memory
+- dynaism lets us dangle more numbers at the bottom of the search tree
+
+In code this looks like:
+
+typedef struct node
+{
+  int number; 
+  //time to add 2 pointers each of which is a struct node
+  struct node *left;
+  struct node *right;
+}
+node;
+
+//search function that returns a boolean
+//recursion is helpful b/c we have a 2D structure
+
+bool search(node *tree, int number)
+//tree is the current node
+{
+  //base case
+  if (tree == NULL)
+  {
+    return false;
+  }
+  else if (number < tree->number)
+  {
+    return search(tree->left, number);
+  }
+  else if (number > tree->number)
+  {
+    return search(tree->right, number);
+  }
+  else if (number == tree->number)
+  {
+    return true;
+  }
+}
+
+//C lets you fine-tune how much memory the computer uses
+
+Perversion of the algorithm where we get unlucky 
+- if the user adds the numbers 1,2,3,4 we'll start to get what look like a list. extra work would need to be put in to actually make it a binary search tree
+- In turn, unbalanced binary search tree has a run time of O(n) (bad) and a balanced binary search tree has a run time of O(log n) (better!)
+
+MORE DATA STRUCTURES 
+- O(1) constant time means we can find data independent of the size of the data structure
+- Dictionaries = abstract data structure
+- Think of a dictionary as being comprised of key-value pairs
+
+Hasing is about taking as input some value and outputting a simple version thereof
+- think sorting a deck of cards in a bucket by suite so you reduce the large domain of the card deck to a smaller range of the suits 
+
+
+13:18:06  Hashing and hash functions (current place)
+
 11:27:18  Importance of Data Structures
 12:24:03  Adding Elements to Linked List
 12:34:00  Explanation of implementing a stack using linked lists,
