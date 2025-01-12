@@ -1,0 +1,160 @@
+
+00:02 Transition from C to Python
+- python offers abstraction over lower level ideas
+- python is readible + has a lot more libraries you can use than C
+
+03:11 In Python, programs no longer need to be compiled before running, unlike C programs.
+instead of writing something like: 
+clang o hello hello.c -lcs50
+./hello
+
+you can now write:
+python hello.py
+- files now end in .py
+- clang is a compiler but python/.py is an interpreter so it doesn't need to compile 0's and 1's
+
+Python speller:
+
+#set is a colleciton of things that won't contain duplicates
+words = set()
+
+#creating a function called check() that takes as input a word
+def check(word)
+    #checking if a word is in that said of words
+    return word.lower() in words
+
+def load(dictionary)
+    #opening dictionary as a variable called file
+    with open(dictionary) as file:
+        #update the set of words to be the updated ver of whatever's in this file as a result of reading it an splitting it's lines
+        #splitlining splits the big, long column of words in the file into one big collecton
+        words.update(file.read().splitlines())
+    return True
+
+def size():
+    return len(words)
+    #len or length is a function in python
+
+
+def unload():
+    #nothing to unload in python b/c python manages ur memory for u
+    return True
+
+
+Why Python vs C?
+- Python = slower than C and seems to take up more space than C
+- Python tends to be more readible than C
+
+Filter example for bluring an image:
+from PTL import Image, ImageFilter
+
+before = Image.open("bridge.bmp")
+after = before.filter(ImageFilter.BoxBlur(10))
+after.save("out.bmp")
+
+Installing a library for facial recognition:
+pip install face_recgnition 
+
+
+22:05 In Python, you import the name of the library instead of including a .h file, allowing for more precise control over the specific functions you want to use.
+- ie import cs50
+- can even be more precise: from cs50 import get_string
+
+In python you can implement the idea of getting a user's name (from user input) like:
+answer = get_string("What's your name? "
+print("hello," + answer)
+
+- "+" in this context just joins the 2 strings together
+- don't have to declare the type of variable in python
+
+can even do:
+answer = get_string("What's your name? "
+print("hello,", answer)
+- Python can figure out that it should join the 2 variables and put a single space between them
+
+Format string or f string as the most common way to join strings togther
+answer = get_string("What's your name? "
+print(f"hello," {answer}")
+- Python will interpreolate whatever is inside {} to plug in the value for you
+- Kinda like %s
+
+Example:
+from cs50 import get_string
+
+answer = get_string("What's your name? ")
+print(f"hello, {answer}")
+
+**In Python you don't even need to use get_string**
+- get string uses input() in python where input() is basically get_string
+
+answer = input("What's your name? ")
+print(f"hello, {answer}")
+
+31:50 Python makes variable declaration and manipulation simpler.
+when making a counter variable can do:
+counter += 1
+
+-no ++ or -- in Python :(
+
+33:54 Python simplifies variable types for ease of use.
+Python uses datatypes:
+- bool
+- float
+- int
+- str
+
+x = int input(("x: "))
+y = int(input("y: "))
+
+print(x + y)
+
+
+39:52 Converting x and y to integers in Python using int() function.
+
+Example:
+x = int input(("x: "))
+y = int(input("y: "))
+
+print(x + y)
+- in Python you can nest functions where you can call one function and then pass its output as the input to another function 
+- this in turn lets us convert strings to int
+- int in the context of python is a function where it takes a str (string) and returns a numeric or an integral equivalent
+
+- in python you get hash tables for free!
+43:43 Importing libraries and avoiding function collisions in Python.
+do:
+import cs50
+
+x = cs50.get_int("x: ")
+y = cs50.get_int("y: "
+
+print(x + y)
+
+45:45 Python uses indentation instead of curly braces for code blocks
+49:32 Python strings behave differently than in C
+51:33 Python is meant to be higher-level and more accessible.
+55:43 Designing a solution for handling Y and Yes without capitalization.
+57:40 Strings in Python come with built-in functions for operations like uppercase, lowercase, etc.
+1:01:46 Introduction to using loops in Python
+1:03:42 Python uses a more concise syntax for looping compared to C.
+1:07:23 Python makes looping easier than C using iterable objects.
+1:09:23 Python's print() function can customize line endings.
+1:13:42 Introducing loops and creating functions in Python
+1:15:29 Defining and calling a custom function in Python
+1:19:24 Enhancing function implementation with parameters in Python
+1:21:13 Python handles truncation differently than C
+1:25:00 Python has advantages over C in handling floating point precision and integer overflow.
+1:26:57 Introduction to using functions in Python
+1:30:51 The get_int() function in Python involves input, conversion to integer, and exception handling for ValueError.
+1:32:41 Handling exceptions in Python and using loops to create Mario-like structures
+1:36:32 Using loops and Pythonic implementation
+1:38:36 Python lists automatically handle memory and are like linked lists
+1:42:30 Python allows for easy manipulation of lists using built-in functions and methods.
+1:44:38 Adding lists in Python and linear search
+1:48:20 Python allows for efficient searching and data storage using dictionaries.
+1:50:25 Creating a list of dictionaries in Python
+1:54:35 Python uses square brackets with strings to access dictionary instead of dot notation used in C.
+1:56:26 You can simplify dictionaries and use single quotes to avoid mixing double quotes in Python.
+2:00:44 Using command-line arguments and sys library in Python
+2:02:44 Using sys module in Python for command-line arguments and program exits.
+2:07:01 Creating QR code in Python.
