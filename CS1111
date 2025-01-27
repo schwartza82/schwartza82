@@ -8,3 +8,43 @@
 - informal description of instruction
 - syntax isn't quiet right but the instructions are specific and in correct order
 - can be transformed into a code by using a programming language with its proper syntax
+
+
+String as collection
+- Strings are collections of characters, indexed (order matters), iterable (reptition is okay), and immutable
+- Strings have both positive and negative indexes
+
+**String object type means that when you pick out a character from a string you STILL get a string***
+ie s = 'wilson'; s[0] = 'w'
+- read as s[0] as "s sub 0" or "s of 0"
+- The zeroth character of s
+
+***indices are ALWAYS ints and s[1.0] will give an error****
+
+Indexing = get one thing out of a collection
+
+Slicing = get a chunk out of a collection (mult. contiguous items)
+- Give it a start index and an end index
+- Slicing evaluates to a new collection from start (inclusive) to end (exclusive)
+
+s[start:end]
+- 
+
+s[start:]
+- gives the chunk s starting from index start (inclusive) and ending at the end of the collection)
+
+s[start:end:step] 
+- Extended slice
+- gives a chunk of a starting from index start (inclusive), ending at index end (exclusive), keeping every stepth item
+
+
+Slicing example
+s = 'Oranges'
+s[1:-2:2]
+- Start: 2, stop: -2, step: 2
+- We start at idniex 1, we move by 2 steps in the positive direction, and then stop (we exclusude the index -2)
+- Gets 'rn'
+- Moving in negative step in this example you'd get an error b/c Python doesn't let you loop around a collection (I think)
+
+s[-2:1:-2] --> 'en'
+-We start at index -2, move by 2 steps in the negative direction (right to left), and then stop (we exclude the index 1) 
