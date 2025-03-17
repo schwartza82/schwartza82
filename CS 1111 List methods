@@ -1,0 +1,72 @@
+//ListMethods_Mutability
+//- passing a mutable value as an argument to a function only makes the parameter an alias to that value
+
+def be_friendly(x):
+  x.insert(0, 'Greetings!')
+a = ['apple', 'banana']
+
+be_friendly(a)
+print(a) //['Greetings!', 'apple', 'banana']
+
+be_friendly(a.copy())
+print(a) //['apple', 'banana']
+
+//list methods!
+
+#List insertion (adding stuff to list)
+
+numbers = [2,4,6,8,10]
+
+numbers.insert(2, 42)
+print(numbers)
+#output: [2,4,42,6,8,10]
+#inserts 42 at index 2
+
+numbers.append([98,99,100])
+print(numbers)
+//output: [2,4,6,8,10,42, [98,99,100])
+//takes the list (will also be true for a tuple) as a WHOLE
+
+list.extend([98,99,100])
+print(numbers)
+//output: [2, 4, 6, 8, 10, 98, 99, 100]
+
+numbers.extend(42)
+//yields an error b/c 'int' object is not iterable
+//extend needs a COLLECTION to add on to another collection. Ints aren't collections
+//Can pass ints, bools, whatever for .append()
+
+//What happens if you add an empty collection???
+a = [1,2,3]
+a.extend([])
+//output: [1,2,3]
+
+//List deletion (remove stuff from list)
+numbers = [2,4,6,8,10]
+
+numbers.remove(6)
+print(numbers)
+//output: [2,4,8,10]
+
+numbers.remove(42)
+//yields an error b/c 42 is an int not a list
+
+x = numbers.pop(3)
+print('numbers', numbers)
+print('x', x)
+y = numbers.pop()
+print('numbers', numbers)
+print('y', y)
+//output [2,4,6,10]
+//x 8 
+
+//.pop() can be used for any datatype
+
+//Reverse
+numbers.reverse()
+
+//for most list methods calls do not require to be assigned to a variable
+//when revisingn and reviewing string methods (important for exam 4) know the difference b/w an object type being mutable + immutable AND how many of these methods act upon a certain value when called
+
+//if you call a sort method on a list that doesn't have integers, then it will store the string literals in alphabetical order
+//if you mix different datatypes like string and integers, then you get an error because the code sorts things using comparison statements
