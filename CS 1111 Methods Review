@@ -1,0 +1,164 @@
+Alias vs shallow vs deep copies
+- alias creates a pointer to the original list
+- shallow copy creates a copy of the list but only pointersto any any nested list(s)
+- deep copy creates a copy of the list and any nested list(s). Function deepcopy() is included in Python module copy
+
+
+What is the output of the following code?
+
+def operate(a,b):
+  c = a + b
+  return a,b,c
+print(list(operate(5,6)))
+
+Output: [5,6,11]
+
+Which of the following options contains a method?
+C. "beautiful human".split()
+
+what is the output of 
+print(int(' 25 '.strip().upper()) >= 1)
+
+C. True
+
+- strip method says that if there is alphabet u strip it
+-since ' 25 ' has spaces and it, strip will remove that and then compare the int 25 to the int 1
+
+What is the output of the following code?
+a_list = [5,10,15,20]
+print(a)list.insert(2,25).pop(3))
+
+- one rule that we need to remember with method chaining: method chaning is called on to the return value 
+
+Answer: Error
+- methods that come on later in the chain are always acting on what the previous method returns
+- calling pop to pop the item at index 3 is being called on None
+
+a_list = [5,10,15,"20"]
+print(a_list.pop(3)[1] == True)
+
+answer is b. False 
+- pop returns a string since 20 is a string literal.
+- pops "20" as a string literal which is indexed at [1] so we get so which is false
+
+a_list = [5,10,15,"20"]
+print(a_list.pop(3)[1] == True)
+del a_list[0]
+print(a_list)
+
+C. [10,15]
+- pop removes whatever is at index 3
+- del removes index zero
+
+What is the output of the folowing code
+print("Trick or treat".find('t')
+
+Answer C. 9
+
+print("Trick or treat".replace('',t')[-10:-1].count('t')
+- replaces all spaces with t
+- but -1 index isn't included so last 't' in treat isn't counted
+C. 3
+
+a_list = ["one", "two"]
+x = "three"
+a_list += [x]
+print(a_list)
+
+- can't add a string to a list
+- but string literal is assigned to variable x and bounded by [] so [x] is the same object type as a_list
+
+B. ["one", "two", "three"]
+
+a_list = ["one", "two"]
+x = "three"
+a_list += [x]
+x=3
+print(a_list)
+
+B. ["one", "two", "three"]
+- at a certain memory locatoin, the value assigned is simply pointing to the value location
+- x is pointing towards 3 in integer location. [x] will be in a dif memory location (?)
+- code runs in sequence so [x] has already been added to a_list
+
+
+a_list = ["one", "two"]
+x = "three"
+a_list += [x]
+x[0]= '3'
+print(a_list)
+
+E. Error
+- Error b/c strings aren't mutable options!!!!
+- Trying to access a specific index in a string to assign a different value. This generates an error
+
+a_list = ["one", "two"]
+x = ["three"]
+a_list += [x]
+x[0]= '3'
+print(a_list)
+
+D. ["one", "two", [3]]
+- x is a listed set. and then we 
+- a  list with string literal 3
+- generated a nested data structure in line number 3.
+- in line number 4, whatever list x is pointing towards, I want to change the value from string literal "three" to an integer
+- when you chage the value at x[0] for the nested data structure from "three" to 3, it reflects in your parent function
+- using a variable to both store a variable and a copy of that variable at another memory location
+
+zoo = ["hippo", "zebra", "lion"]
+new_zoo = zoo
+zoo[2] = "tiger"
+print(new_zoo)
+
+new_zoo is a alias of of zoo, so item zoo is the same but it is known by a different name
+
+B. ["hippo","zebra","tiger"]
+
+zoo = ["hippo", "zebra", "lion"]
+new_zoo = zoo[:]
+zoo[2] = "tiger"
+print(new_zoo)
+
+- new_zoo = zoo[:] is a copy so you have two lists now
+- which ever list is refered to zoo[2], change to "tiger"
+- but new_zoo is a copy, so it won't reflect the change
+
+A. ["hippo", "zebra", "lion"]
+
+def what_fruits(a_list):
+  a_list[0] = “apple”
+fruits = [“banana”, “orange”]
+what_fruits(fruits)
+print(a_list)
+
+E. Error
+- because it's printing a_list, a local variable from the global scope
+- trying to access a local variable from the global scope
+
+def what_fruits(a_list):
+  a_list[0] = “apple”
+fruits = [“banana”, “orange”]
+what_fruits(fruits)
+print(fruits + [“kiwi”])
+
+- Function def takes a required argument that requires that at index 0, we need to assign a string literal "apple"
+- assigning fruits a list with two literals
+- Calling function, we pass fruits as an argument and replace "banana" with "apple" by def of what_fruits
+- adding ["kiwi"] we get ["apple", "orange", "kiwi"]
+
+C. ["apple", "orange, "kiwi"]
+
+
+def what _I_do(a_list):
+  new_list = []
+  for i in a_list:
+    new_list.append(i)
+  new_list.sort())
+print(what_I_do([3,4,5,6,7,8,9]))
+
+D. None
+- Whenever we are printing a function call or a method call, we're printing what the function is returning 
+
+
+
