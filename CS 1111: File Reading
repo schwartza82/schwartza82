@@ -1,0 +1,137 @@
+Reaading a file...compared to snail mail
+- assuming in this class that the file already exists 
+
+Local delivery in snail mail (walking distance)
+- address: name of recipient
+- no postage
+- easier to nderstand what the letter is talking about; more context
+
+Local File (focus of course) 
+- the name of the file
+- cheap (computer resources)
+- after reading, we have a string
+
+Far away - Long distance delivery
+- address: stress name, street #,, apartment #, zip code, city, state
+- add stamps for postage
+- Harder to undertand what the letter is talking about; less context
+
+Web page
+- url
+- more expensive
+- after reading, we have bytes
+
+Steps to read from a file
+1. tell python where to read from: open the file
+a. local: the filename is just the name of the file
+b. web: a url address (http://ww...)
+
+2. Python sends that data to your OS (operating system) as a "stream" (kinda like a bridge). You can read from the stream, but it is not itself the text of the file
+a. you have the attention of the filename
+
+3. Read the data from the stream (line-by-linen or all at once)
+a. local: get a string
+b. web: you get bytes, which you can turn into a string with bytes_read.decode('utf-8')
+
+4. Streams are always read-once
+a. stream is a one way bridge and only read once
+5. You should always close the file when you're done with it
+
+2 ways to poen a file (from a local source)
+#first approach 
+file_connector = open(filename, 'r')
+- string literal of name of file exactly as it appears is the 1st argument. File must be locally present in the same file where you're writing your code. 
+- open is a built in function in Python
+- 'r' says you're opening a file in read mode
+- variable which you have assigned a function or method call will end up holding the return value 
+- open function is RETURNING A FILE OBJECT so file_connector will hold the value the open function returns 
+
+- the object type that open returns is a file object type and it has it's own set of methods such as the .close() method 
+- close lets you close the files
+file_connector.close()
+
+#second approach 
+with open(filename, 'r') as file_connector:
+- open function is being used in this method but it's not being assigned to a variable using an assignment statement of "=" instead it's being used with a keyword "with"
+- with is like if, elif, else and is a keyword that requires a ":" at the end
+- variable name that holds the value returned by the function call returns later after "as" so the variable is file_connector (can also say as x, as y, etc)
+- whenever you use the with keyword to open a file, python closes the file by default for you
+
+What does open() give us?
+- open() returns a file object called a "handle", "connection", or "stream"
+
+- urlib.request.urlopen() returns something similar
+- we use both functions in similar ways:
+  fstream = open(filename)
+  fstream = urlib.request.urlopen(url)
+  - result of this was a "connect" to the ocntents of the file/webpage
+
+we've open a file: fstream = open(filename, 'r')
+
+to read file line-by-line:
+- fstream.readline() reads the next unread line in the file
+- for in line in stream: the variable line will contian the next unread line each time through the loop
+
+to read a file all at once
+- fstream.read() returns one string representing the entire file
+- fstream.readlines() returnsa list of all the remaining lines as strings
+
+Reading from Local vs Web files
+
+Local File
+s = open(filename)
+for row in s:
+  ccell = rows.strip().split(',')
+  ....
+s.close()
+
+Web File
+import urllib.request
+s = urllib.request.urlopen(url)
+for row in s:
+  row = row.decode('utf-8') #decode is a string method for file objects used to convert the format of a string because files stored online are in a format that is different than the standard Python strings. Helps OS decrypt data
+  cells = row.strip().split(',')
+  ...
+s.close()
+
+- In both cases, the code is reading one line at a time
+
+
+#Example 1: Reading from a file
+Procedure
+1. Tell Python where you'd like to read from (the name of the file)
+2. Python sends this to OS, if successful, gives back a "stream" from which you can read the data
+3. You read the data (line-by-line or all at once)
+4. Once you've read a line, it's gone from the stream
+5. To be safe, .close() the stream when you're done
+
+#need the name of the file we're reading
+filename = 'food.csv'
+"""
+Apple, 7, fruit
+Tomato, 12, vegetable
+"""
+
+#ask OS for a connection to the file, open in 'read' mode
+connection = open(filename, 'r')
+print(type(connection)) 
+#output <class '_io.TextIOWrapper'>
+
+print(connection)
+#output: <io.TextIOWrapper
+name = 'food.csv' mode = 'r'
+encoding = 'cp1252'>
+
+# Use the connection to read the file
+contents = connection.read()
+print(type(contents))
+# output: <class 'str'>
+
+print(contents)
+# 
+
+#close the file (not technically necessary whenn reading)
+connection.close()
+
+
+
