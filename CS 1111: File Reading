@@ -121,17 +121,23 @@ print(connection)
 #output: <io.TextIOWrapper
 name = 'food.csv' mode = 'r'
 encoding = 'cp1252'>
+# When you print a variable that holds the file object returned by the open() function call, it's not gonna show you the data inside the file. It shows you the description of that file inside the object. It tells you that it's a file object, tells you the name of the csv, the mode (read mode), and the encryption code
+#OPENING THE FILE DOESN'T MEAN WE'RE ACTUALLY READING FROM THE FILE
+
 
 # Use the connection to read the file
 contents = connection.read()
+#file.read() method brings the entire contents of a file into a single string literal
 print(type(contents))
 # output: <class 'str'>
-
 print(contents)
-# 
+# output is the contents of the file: 
+Apple, 7, fruit
+Tomato, 12, vegetable
 
-#close the file (not technically necessary whenn reading)
+#close the file (not technically necessary when reading)
 connection.close()
 
+#Day 25
 
 
