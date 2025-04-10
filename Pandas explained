@@ -1,0 +1,41 @@
+#why pandas?
+- more flexibility than in excel
+- pandas lets you work with larger datasets!
+
+#loading data into pandas (assuming you've already installed in in pip install pandas)
+#if csv is in the same folder/location that you're writing your code, you can just put the "name_of_the_file.csv"
+import pandas as pd
+df = pd.read.csv('pokemon_data.csv')
+
+#print to see the first 3 rows of data
+print(df.head(3)
+
+#using .txt as only argumenet in .read_csv() function will get a really big column (bad) so need to specify what's seperating it
+df = pd.read_csv('pokemon_data.txt, delimiter = '\t')
+
+#Reading Data in Pandas
+
+#Reading headers
+print(df.columns)
+
+#Read each column
+#here we want the first five enteries in the name column 
+print(df['Name'][0:5])
+
+#for multiple columns, make a list of column names
+print(df[['Name', 'Type 1', 'HP']]
+
+#Reading each row
+#iloc means integer location of row 
+print(df.iloc[1])
+
+#iterating through each row as you read it
+for index, row in df.iterrows():
+  print(index,row)
+
+#Read a specific location (Row,Column)
+print(df.iloc[2,1])
+
+
+
+
