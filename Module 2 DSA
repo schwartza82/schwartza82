@@ -1,0 +1,58 @@
+//Module 2
+Linear search is an algorithm that starts from the beginning of an array and checks each element until the search key is found or the end of the array is reached
+- searches + compares element one-by-one
+- compares all elements if search key isn't present
+
+Example
+
+import java.util.Scanner;
+
+public class LinearSearchDemo {
+  static int linearSearch(int[] numbers, int key) {
+    for (int i = 0; i < numbers.length; i++) {
+      if (numbers[i] == key) {
+        return i;
+      }
+    }
+    return -1; //not found
+  }
+
+  public static void main(String[] args) {
+    int[] numbers = {2,4,7,10,11,32,45,87};
+    Scanner scnr = new Scanner(System.in); //Scanner is a class that reads/parses input from different sources
+    }
+    System.out.print("Numbers: ");
+
+    System.out.print("Enter a value: ");
+    int key = scnr.nextInt(); //This method specifically reads the next token from the input stream and attempts to interpret it as an integer
+
+    int keyIndex = linearSearch(numbers, key);
+
+    if (keyIndex == -1) {
+      System.out.println(key + " was not found.")'
+    }
+    else {
+    System.out.println("Found" + key + " at index " + keyIndex + ".");
+    }
+  }
+}
+
+
+Binary Search: phone contact number
+- searches first half and otherwise last half
+- each step reduces the contacts that need to be searched by half
+//middle index if computed by integer division
+//array must be ordered
+//key relates to index of element in array; value is the value of element
+//write down code for Binary search later
+
+Question: For each question, assume that a search occurs on an array with 1024 elements. For questions 2 and 3, assume the array is sorted 
+
+(1) A linear search occurs. How many distinct array elements are compared against a search key that's greater than all elements in the array?
+- linear search assumes the elements aren't sorted and checks all elements if the key isn't found. So all 1024 elements are compared against the search key
+
+(2) A binary search occurs. How many distinct array elements are compared against a search key that's greater than all elements in the array?
+- binary search compares all indices 511, 767, 895, 959, 991, 1007, 1015, 1019, 1021, 1022, and 1023
+
+(3) A binary search occurs. How many distinct array elements are compared against a search key that's less than all elements in the array?
+- binary search compares all indices 511, 255, 112, 56, 28, 14, 7, 3, 1, and 0 
