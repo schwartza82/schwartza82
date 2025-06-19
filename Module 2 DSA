@@ -256,3 +256,16 @@ for (int i = 0; i < N; i++)  {
 //for i =0, inner loop runs N times so O(N)
 //outer loop has a runtime of O(N)
 //so big O notation is O(N^2)
+
+//Growth of functions and complexity
+- Lower bound: A function f(N) that is ≤ the best case T(N), for all values of N ≥ N_0
+- Upper bound: A function f(N) that is ≥ the worst case T(N), for all values of N ≥ N_0
+
+N_0 is any non neg int, and will normally be 1 in this course
+
+Questions: Suppose an algorithm's best case runtime complexity is T(N) = 3N + 6 and the algorithm's worst case runtime is T(N) = 5N^2 + 7N
+
+- An infinite number of functions are ≤ 3N+6 for all N≥1 
+- 3N is a single-term polynomial, is ≤3N+6 for all N≥1, and bounds T(N) as tightly as possible. So 3N is a preffered lower bound
+
+
