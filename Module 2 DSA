@@ -56,3 +56,203 @@ Question: For each question, assume that a search occurs on an array with 1024 e
 
 (3) A binary search occurs. How many distinct array elements are compared against a search key that's less than all elements in the array?
 - binary search compares all indices 511, 255, 112, 56, 28, 14, 7, 3, 1, and 0 
+
+
+//Constant Time Operations (2.3)
+- An operation for a given time, operates in the sae amount of time, regardless of input values
+
+Example:
+int x = 10; //assignment
+int y = 20;
+int a = 1000;
+int b = 2000;
+
+int z = x*y //multiplication is a constant time operation
+**string concatenation is another common operation that's not constant time, b/c more characters must be copied for larger strings
+
+Loops can be constant time operations
+Example: 
+for (int i = 0; i < 10; i++) {
+  sum += y;
+}
+
+Constant time operations include
+- Substraction, mult., division of a fixed size int or floating point (note that division is often slower than multiplcation in many processors but each division op. takes the same amount of time regardless of inputed values)
+- ann assignment of a reference or other fized size data value
+- comparisons b/w two fixed size data values
+- read or write an array element at a particular index
+
+**f(N)is the specific function and Big O notation specifies the highest order term of the function and omits constants
+
+Example of reading an array element at a particular index:
+int x = arr[index];
+arr[index + 1] = x +1;
+
+//Algorithm analysis (2.4)
+- worst-case runtime complexity (longest execution)
+
+Runtime analysis: Finding the max value
+
+int maxVal = numbers[0] //one operation (assignment)
+for (int i = 0; i < N; i++) { 
+  if (numbers[i] > maxVal) { 
+    maxVal[i] = numbers[i]
+  }
+}
+
+for (int i = 0; i < N; i++)
+//i = 0 is an assignment operation that's only executed once (1)// for each loop iteration, the increment and comparison (i < N; i++) is executed once (2N)
+//One additional comparison (i < N) is made before the loop ends to ensure that we're at the end of the array (1)
+
+if (numbers[i] > maxVal)
+//Comparison operation for each N iteration (3N)
+
+maxVal[i] = numbers[i]
+//In worst-case runtime, the max value is the last element of the array (at the end) so this runs for each iteration (4N)
+
+f(N) = 1 + 1 + (4)N
+O(N) = 3 + 4N
+
+Question 1: Which function best represents the number of operations in the worst-case?
+
+int i = 0; //assignment runs once
+int sum = 0; //assignment runs once
+while (i < N) { (while loop for N iterations + final comparison that runs once)
+   sum += numbers[i]; //assignment runs once per iteration 
+   ++i; //increment that runs once per iteration
+
+3 operations per iteration
+3 operations that run once (assignment operations + final comparison)
+
+f(N) = 3N +3
+
+Question 2: What is the simplest Big O notation for the worst-case runtime?
+
+int negCount = 0; //assignment
+for (int i = 0; i < N; ++i) { //i = 0 runs once as an assignment //i < N; i++ each run once per iteration // i<N final comparison
+   if (numbers[i] < 0) { //once comparison per iteration
+      ++negCount; //one comparison per iteration
+   }
+
+f(N) = 1 + 1 + 1 + (2 + 2)N
+O(N)
+
+Question 3: What is the Big O notation for the worst-case runtime?
+
+for (int i = 0; i < N; ++i) { //one assignment //comparison and increment per N iteration //final comparison
+   if ((i % 2) == 0) { //comparison per N iteration 
+      outVal[i] = inVals[i] * i; //we'll only get the comparison for every other element in the array so N/2
+   }
+}
+
+f(N) = 1 + (2 + 1 +1/2)N -> 1 + (7/2)N
+So O(N)
+
+Question 4: What is the best Big O notation for the worst-case runtime?
+
+int nVal = N; //one assignment 
+int steps = 0; //one assignment
+while (nVal > 0) { //comparison for each iteration and final comparison
+   nVal /= 2; //nVal halves each iteration (log_2(N) function)
+   steps++;
+
+f(N) = 3 + log_2(N) 
+O(log_2(N))
+
+Question 5: 5) What is the Big O notation for the best-case runtime?
+
+int i = 0;
+double belowThresholdSum = 0.0;
+int belowThresholdCount = 0;
+while (i < N && numbers[i] <= threshold) { 
+   belowThresholdCount++;
+   belowThresholdSum += numbers[i];
+   i++;
+}
+double avgBelow = 
+   belowThresholdSum / belowThresholdCount;
+
+// If numbers[0] > threshold then loop won't execute so big O notation wil be O(1)
+
+Constant time operations questions:
+
+Question 1: A for loop of the form "for (i = 0; i < N; ++i) {}" that does not have nested loops or function calls, and does not modify i in the loop, has runtime complexity O(N).
+- True because it will be based on N iterations
+
+Question 2: The complexity of the code below is O(1).
+
+if (timeHour < 6) {
+   tollAmount = 1.55;
+}
+else if (timeHour < 10) { 
+   tollAmount = 4.65;
+}
+else if (timeHour < 18) {  
+   tollAmount = 2.35;
+}
+else {
+   tollAmount = 1.55;
+}
+
+//True because based on assignment of timeHour
+
+Question 3: The complexity of the algorithm below is O(1).
+
+for (int i = 0; i < 24; ++i) {
+   if (timeHour < 6) {        
+      tollSchedule[i] = 1.55;
+   }
+   else if (timeHour < 10) { 
+      tollSchedule[i] = 4.65;
+   }
+   else if (timeHour < 18) {  
+      tollSchedule[i] = 2.35;
+   }
+   else {  
+      tollSchedule[i] = 1.55;
+   }
+}
+
+//True because the for loop executes a constant number of times (24 times)
+
+//Runtime analysis of selection sort algorithm
+
+for (int i = 0; i < N; ++i) { 
+   int indexSmallest = i; 
+
+   for (int j = i + 1; j < N; ++j) { 
+      if (numbers[j] < numbers[indexSmallest]) {
+         indexSmallest = j; 
+      }
+   }
+
+   int temp = numbers[i]; 
+   numbers[i] = numbers[indexSmallest]; 
+   numbers[indexSmallest] = temp; 
+}
+
+//For each iteration of the outer loop, the runtime of the inner loop is determined and added together to form a summation. For iteration i = 0, the inner loop executes N - 1 iterations.
+//for i=1, the inner loop executes N-2 iterations iteration from j=2 to N-1
+//For i = N - 3, the inner loop iterates twice: iterating from j = N - 2 to N - 1.  For i = N - 2, the inner loop iterates once: iterating from j = N - 1 to N - 1
+//This can all be summed to N(N-1)(1/2)
+//Each iteration of the loops requires a constant number of operations, which is defined as the constant c (in this case 4 operations)
+//Additionally, each iteration of the outer loop requires a constant number of operations, which is defined as the constant d (in this case 5 operations)
+
+f(N) = c(N(N-1)(1/2)) + dN
+in big O notation this is: O(N^2)
+
+Question 1: 1)
+for (int i = 0; i < N; i++)  {
+   for (int j = 0; j < N; j++) {
+      if (numbers[i] < numbers[j]) {
+         ++eqPerms;
+      }
+      else {
+         ++neqPerms;
+      }
+   }
+}
+
+//for i =0, inner loop runs N times so O(N)
+//outer loop has a runtime of O(N)
+//so big O notation is O(N^2)
