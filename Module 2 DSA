@@ -359,3 +359,61 @@ void selectionSort(int[] numbers) {
 
 Question: A selection sort has what runtime complexity?
 Answer: O(N^2) because selection sort starts at one end of an array and swaps it with the minimum valued element of the total array (creating a sorted section). So there's a for loop that goes through the array and an if statement that iterates through the unsorted array to find the index of the minimum element in the array.
+
+//Recursive Algorithms
+
+An algorithm is a sequence of steps, including at least one terminating step, for solving a problem. A recursive algorithm is an algorithm that breaks the problem into smaller subproblems and applies the algorithm itself to solve the smaller subproblems.
+
+Because a problem cannot be endlessly divided into smaller subproblems, a recursive algorithm must have a base case: A case where a recursive algorithm completes without applying itself to a smaller subproblem.
+
+Example of base case:
+if (N == 1) {
+   return 1;
+}
+
+Non-base case:
+else {
+   return N * factorial(N - 1);
+}
+- Computes the result by multiplying N by (N - 1) factorial.
+- recursive logic is factorial(N - 1)
+
+
+Sample recursive methods:
+
+int factorial(int N) {
+   if (N <= 1) {
+      return N;
+   }
+   else {
+      return N * factorial(N - 1);
+   }
+}
+
+
+int cumulativeSum(int N) {
+   if (N == 0) { //base case
+      return 0;
+   }
+   else {
+      return N + cumulativeSum(N - 1); //recusive logic in cumulativeSum(N-1)
+   }
+}
+
+
+void reverseArray(int[] array, int startIndex, int endIndex) {
+   if (startIndex >= endIndex) {
+      return;
+   }
+   else {
+      int temp = array[startIndex];
+      array[startIndex] = array[endIndex];
+      array[endIndex] = temp;
+
+      reverseArray(array, startIndex + 1, endIndex - 1);
+   }
+}
+
+Suppose reverseArray() is called with an array of length 3, a start index of 0, and an out-of-bounds end index of 3. Would the base case ensures that the still properly reverses the array?
+- No because 0 is less than 3, reverseArray() would encounter the non-base case, attempt to swap at indices 0 and 3, and would therefore access the array out of bounds.
+- base case doesn't equal error-checking
