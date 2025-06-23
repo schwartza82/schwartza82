@@ -417,3 +417,6 @@ void reverseArray(int[] array, int startIndex, int endIndex) {
 Suppose reverseArray() is called with an array of length 3, a start index of 0, and an out-of-bounds end index of 3. Would the base case ensures that the still properly reverses the array?
 - No because 0 is less than 3, reverseArray() would encounter the non-base case, attempt to swap at indices 0 and 3, and would therefore access the array out of bounds.
 - base case doesn't equal error-checking
+
+//Recurrance relations
+Binary search performs constant ime operations, then a recursive call that operates on half of the input, making the runtime complexity T(N) = O(1) + T(N / 2). Such a function is known as a recurrence relation: A function f(N) that is defined in terms of the same function operating on a value < N/
